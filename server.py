@@ -26,8 +26,8 @@ def background_process():
 
         #eval to convert the string into any array
 		redValues = np.asarray(eval(request.args.get('redValues')))
-        	greenValues = np.asarray(eval(request.args.get('redValues')))
-		blueValues = np.asarray(eval(request.args.get('redValues')))
+        	greenValues = np.asarray(eval(request.args.get('greenValues')))
+		blueValues = np.asarray(eval(request.args.get('blueValues')))
 
 		print(smooth(redValues,10))
         	print(redValues)
