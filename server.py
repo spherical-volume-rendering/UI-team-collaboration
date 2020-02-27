@@ -22,29 +22,20 @@ def index():
 
 @app.route('/background_process')
 def background_process():
-	try:
-
-        #eval to convert the string into any array
-		redValues = np.asarray(eval(request.args.get('redValues')))
-        	greenValues = np.asarray(eval(request.args.get('greenValues')))
-		blueValues = np.asarray(eval(request.args.get('blueValues')))
-
-		print(smooth(redValues,10))
-        	print(redValues)
-
-                print assignValues(redValues,greenValues, blueValues)
-
-		return jsonify(result='data arrived')
+    redValues = np.asarray(eval(request.args.get('redValues')))
+    greenValues = np.asarray(eval(request.args.get('greenValues')))
+    blueValues = np.asarray(eval(request.args.get('blueValues')))
+    assignValues(redValues,greenValues, blueValues)
+    return jsonify(result='data arrived')
 		
-	except Exception as e:
-		return str(e)
+
     
 def assignValues(redVal, greenVal, blueVal):
         ctf = yt.ColorTransferFunction( (-10.0, -5.0) )
         ctf.add_layers(8)
         ctf.red.y = redVal
-        ctf.green.y = np.asarray([random.random() for _ in xrange(256)])
-        ctf.blue.y = np.asarray([random.random() for _ in xrange(256)])
+        ctf.green.y = greenVal
+        ctf.blue.y = blueVal
         
         '''
         ctf.red.y = smooth(redVal, 20)
