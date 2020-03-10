@@ -38,8 +38,8 @@
 <script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.1.0.min.js"   integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s="   crossorigin="anonymous"></script><script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js" integrity="sha384-s1ITto93iSMDxlp/79qhWHi+LsIi9Gx6yL+cOKDuymvihkfol83TYbLbOw+W/wv4" crossorigin="anonymous"></script>
     {% endblock %}
-    
-    
+
+
     <style>
 
 svg {
@@ -51,7 +51,7 @@ svg {
 }
 
 
-    
+
 .axis path,
   .axis line{
     fill: none;
@@ -61,6 +61,7 @@ svg {
   .rline{
     fill: none;
     stroke: rgb(255,74,27);
+    stroke-dasharray: 50;
     stroke-width: 2px;
   }
 .gline{
@@ -71,6 +72,7 @@ svg {
 .bline{
     fill: none;
     stroke:rgb(0,57,213);
+    stroke-dasharray: 2;
     stroke-width: 2px;
   }
   .tick text{
@@ -80,7 +82,7 @@ svg {
   .tick line{
     opacity: 0.2;
   }
-    
+
 
 </style>
 </head>
@@ -96,15 +98,15 @@ svg {
       </button>
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav ml-auto" >
-        
-       
+
+
         </ul>
-          
+
       </div>
     </div>
   </nav>
 
-    
+
   <!-- Page Header -->
   <header class="masthead" style="background-image: url('../static/img/yt_logo.png');height:710px">
     <div class="overlay"></div>
@@ -123,8 +125,8 @@ svg {
   <!-- Main Content -->
   <div class="container">
     <div class="row">
-       
-       
+
+
       <div class="col-lg-8 col-md-10 mx-auto">
          <h2 class="post-title" id="draw">
               Start drawing
@@ -141,18 +143,18 @@ svg {
   <div class="btn-group">
               <button type="button" id="blueButton" onclick="show('blue')" class="btn btn-outline-primary">Blue Channel</button></div>
   </div>
-</div> 
-        
+</div>
+
 
               <div class="col-lg-12 col-md-12 mx-auto" style="height: 500px">
 
         <div class="post-preview" style="height:500px">
-                   
-          
+
+
             <div id="sketch_2" ></div>
 
-            
-                 
+
+
         </div>
       </div>
                     <div class="col-lg-12 mx-auto" >
@@ -162,9 +164,9 @@ svg {
                    <button class="btn btn-default float-right " id="clear">Clear</button>
       </div>
     </div></div>
-        
+
     <!-- Footer -->
-  
+
     <div class="container" id="result" style="display: none; height: 500px">
          <hr>
       <div class="row">
@@ -178,7 +180,7 @@ svg {
         </div>
       </div>
     </div>
-  
+
 
   <!-- Bootstrap core JavaScript -->
     <script rel="text/javascript" href="{{url_for('.static', filename='../static/vendor/jquery/jquery.min.js')}}"></script>
@@ -188,7 +190,7 @@ svg {
   <!-- Custom scripts for this template -->
 <script type="text/javascript" src="{{url_for('.static', filename='../static/js/script.js')}}"></script>
 <script>
-    
+
 var margin = {top: 20, right: 50, bottom: 20, left: 20};
 	width = 1160 - margin.left - margin.right,
 	height = 500 - margin.top - margin.bottom;
@@ -206,9 +208,9 @@ var drawing = false;
 
 var redArray = []
 var greenArray =[]
-var blueArray = [] 
+var blueArray = []
 var color = "red"
-    
+
 
 var line = d3.svg.line()
     .interpolate("bundle") // basis, see http://bl.ocks.org/mbostock/4342190
@@ -222,8 +224,8 @@ var svg = d3.select("#sketch_2").append("svg")
 
 svg.append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-    
-	
+
+
 
 svg
   .on("mousedown", listen)
@@ -239,10 +241,10 @@ var touchEvents = ['touchstart', 'touchmove', 'touchend'];
 touchEvents.forEach(function (eventName) {
   document.body.addEventListener(eventName, function(e){
     e.preventDefault();
-  });  
+  });
 });
 
-    
+
 
       // We're passing in a function in d3.max to tell it what we're maxing (x value)
       var x = d3.scale.linear()
@@ -253,7 +255,7 @@ touchEvents.forEach(function (eventName) {
       var y = d3.scale.linear()
           .domain([0, 1])
           .range([ height - margin.bottom,margin.top]);  // Set margins for y specific
-    
+
 var xAxis = d3.svg.axis()
 	.scale(x)
 	.orient("bottom")
@@ -266,7 +268,7 @@ var xAxis = d3.svg.axis()
     .innerTickSize(-width+70)
     .outerTickSize(0)
     .tickPadding(10);
-    
+
     svg.append("g")
     .attr("class", "axis") // class to style
     	.attr("transform", "translate(" + 10 + "," + (height-20) + ")")
@@ -276,12 +278,12 @@ var xAxis = d3.svg.axis()
     .attr("class", "axis")
 	.attr("transform", "translate(" + 30 + ",0)")
 	.call(yAxis);
-    
-    
- 
-   
 
-    
+
+
+
+
+
 function listen () {
   drawing = true;
   output.text('event: ' + d3.event.type);
@@ -292,16 +294,16 @@ function listen () {
     .data([reddata])
     .attr("class", "rline")
     .attr("d", line);
-    
+
   greenpath = svg.append("path") // start a new line
     .data([greendata])
     .attr("class", "gline")
     .attr("d", line);
-    
+
    bluepath = svg.append("path") // start a new line
     .data([bluedata])
     .attr("class", "bline")
-    .attr("d", line);   
+    .attr("d", line);
   if (d3.event.type === 'mousedown') {
     svg.on("mousemove", onmove);
   } else {
@@ -347,7 +349,7 @@ function onmove (e) {
         reddata.push({ x: point[0], y: point[1] });
         tick(redpath);
         }
-    else 
+    else
         if(color== 'green'){
         greenArray.push(str)
         greendata.push({ x: point[0], y: point[1] });
@@ -358,16 +360,16 @@ function onmove (e) {
         bluedata.push({ x: point[0], y: point[1] });
         tick(bluepath);
         }
- 
+
     }
 }
 
 function tick(path) {
   path.attr("d", function(d) { return line(d); }) // Redraw the path:
 }
-    
-    
-//end of D3    
+
+
+//end of D3
 
 document.getElementById("clear").addEventListener("click", function(){
 
@@ -377,21 +379,21 @@ document.getElementById("clear").addEventListener("click", function(){
        svg.selectAll("path.rline").remove();
 
 	   }
-    else 
+    else
      if(color == 'green'){
        greenArray = []
        //greenpath.attr("d", [] )
        svg.selectAll("path.gline").remove();
 
        }
-    else 
+    else
      if(color == 'blue'){
        blueArray = []
        //bluepath.attr("d", [] )
        svg.selectAll("path.bline").remove();
 
 	   }
-    	
+
     });
 
 
@@ -399,56 +401,56 @@ function submit(){
     redValues= new Array(256).fill(0);
     greenValues= new Array(256).fill(0);
     blueValues= new Array(256).fill(0);
-    
+
     console.log(redArray)
     console.log(greenArray)
     console.log(blueArray)
     if(redArray.length == 0)
-    { 
+    {
      swal({
   icon: 'error',
   title: 'Oops...',
   text: "Please draw the red channel",
-  
+
 })}
     else
         if( greenArray.length == 0  )
-    { 
+    {
      swal({
   icon: 'error',
   title: 'Oops...',
   text: "Please draw the green channel",
-  
+
 })}
       else
         if( blueArray.length == 0  )
-    { 
+    {
      swal({
   icon: 'error',
   title: 'Oops...',
   text: "Please draw the blue channel",
-  
+
 })}
     else
     {
-    for (ind = 0 ; ind < redArray.length; ind++)    
-        { 
+    for (ind = 0 ; ind < redArray.length; ind++)
+        {
         index = redArray[ind]['x']
         value = redArray[ind]['y']
         redValues[index]= value;}
-    for (ind = 0 ; ind < greenArray.length; ind++)    
+    for (ind = 0 ; ind < greenArray.length; ind++)
         {
         index = greenArray[ind]['x']
         value = greenArray[ind]['y']
         greenValues[index]= value;}
-    for (ind = 0 ; ind < blueArray.length; ind++) {   
+    for (ind = 0 ; ind < blueArray.length; ind++) {
 
         index = blueArray[ind]['x']
         value = blueArray[ind]['y']
         blueValues[index]= value;
         }
-   
-    
+
+
     $.getJSON('/background_process', {
 				  redValues: JSON.stringify(redValues),
                   greenValues: JSON.stringify(greenValues),
@@ -460,13 +462,13 @@ function submit(){
         location.href = "#result";
 				  console.log(data.result)
 				});}
-    
-       
+
+
     //console.log(redValues)
     //console.log(greenValues)
     //console.log(blueValues)
-}  
-    
+}
+
 
 
 function show(col){
@@ -478,27 +480,27 @@ function show(col){
     }
     else
     if(col == 'green'){
-     color = 'green' 
+     color = 'green'
     document.getElementById('redButton').className = "btn btn-outline-danger"
     document.getElementById('greenButton').className = "btn btn-outline-success active"
-    document.getElementById('blueButton').className = "btn btn-outline-primary" 
+    document.getElementById('blueButton').className = "btn btn-outline-primary"
     }
     else
     if(col == 'blue'){
-     color = 'blue' 
+     color = 'blue'
     document.getElementById('redButton').className = "btn btn-outline-danger"
     document.getElementById('greenButton').className = "btn btn-outline-success"
-    document.getElementById('blueButton').className = "btn btn-outline-primary active" 
+    document.getElementById('blueButton').className = "btn btn-outline-primary active"
     }
 }
-    
-  
-    
-   
- 
-    
-  
-  
+
+
+
+
+
+
+
+
 </script>
 
 </body>
