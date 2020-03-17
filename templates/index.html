@@ -61,18 +61,18 @@ svg {
   .rline{
     fill: none;
     stroke: rgb(255,74,27);
-    stroke-dasharray: 50;
     stroke-width: 2px;
   }
 .gline{
     fill: none;
     stroke:rgb(40,124,15);
+    stroke-dasharray: 2;
     stroke-width: 2px;
   }
 .bline{
     fill: none;
     stroke:rgb(0,57,213);
-    stroke-dasharray: 2;
+    stroke-dasharray: 10;
     stroke-width: 2px;
   }
   .tick text{
@@ -135,13 +135,13 @@ svg {
           <br>
          <div class="btn-group btn-group-justified">
   <div class="btn-group">
-          <button type="button" id="redButton" onclick="show('red')" class="btn btn-outline-danger active">Red Channel</button>
+          <button type="button" id="redButton" onclick="show('red')" class="btn btn-outline-danger active" style="text-decoration-line: underline;">Red Channel</button>
   </div>
   <div class="btn-group">
-          <button type="button" id="greenButton" onclick="show('green')" class="btn btn-outline-success">Green Channel</button>
+          <button type="button" id="greenButton" onclick="show('green')" class="btn btn-outline-success" style="text-decoration-line: underline;text-decoration-style: dotted;">Green Channel</button>
   </div>
   <div class="btn-group">
-              <button type="button" id="blueButton" onclick="show('blue')" class="btn btn-outline-primary">Blue Channel</button></div>
+              <button type="button" id="blueButton" onclick="show('blue')" class="btn btn-outline-primary" style="text-decoration-line: underline;text-decoration-style: dashed;" >Blue Channel</button></div>
   </div>
 </div>
 
@@ -477,6 +477,7 @@ function show(col){
     document.getElementById('redButton').className = "btn btn-outline-danger active"
     document.getElementById('greenButton').className = "btn btn-outline-success"
     document.getElementById('blueButton').className = "btn btn-outline-primary"
+        
     }
     else
     if(col == 'green'){
