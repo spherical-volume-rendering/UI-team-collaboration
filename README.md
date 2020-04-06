@@ -18,7 +18,7 @@ cd UI-team-collaboration
 ```
 Install the dependencies:
 ```
-pip install requirements.txt
+pip install -r requirements.txt
 ```
 Run the platform server:
 ```
