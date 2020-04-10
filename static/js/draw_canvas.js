@@ -1,6 +1,6 @@
 //deciding on the width and height of the canvas
-var margin = {top: 20, right: 50, bottom: 20, left: 20};
-width = 1160 - margin.left - margin.right,
+var margin = {top: 20, right: 20, bottom: 20, left: 20};
+width = 1150 - margin.left - margin.right,
 height = 500 - margin.top - margin.bottom;
 
 //variable delcartion
@@ -16,6 +16,8 @@ var redArray = []
 var greenArray =[]
 var blueArray = []
 var color = "red"
+var flag = false;
+var firstread = false
 
 
 var line = d3.svg.line()
@@ -35,8 +37,9 @@ svg.append("g")
 
 // adding events to the svg
 svg
-.on("click", listen)
+.on("mousedown", listen)
 .on("touchstart", listen)
+.on("dblclick", listen)
 .on("touchend", ignore)
 .on("touchleave", ignore)
 .on("mouseup", ignore)
@@ -44,7 +47,7 @@ svg
 
 
 // ignore default touch behavior
-var touchEvents = ['touchstart', 'touchmove', 'touchend'];
+var touchEvents = ['touchstart', 'touchmove', 'touchend' ];
 touchEvents.forEach(function (eventName) {
 document.body.addEventListener(eventName, function(e){
 e.preventDefault();
@@ -71,9 +74,16 @@ var xAxis = d3.svg.axis()
 
 svg.append("g")
 .attr("class", "axis") //adding class for style purposes
-.attr("transform", "translate(" + 10 + "," + (height-20) + ")")
+.attr("transform", "translate(" + 0 + "," + (height-20) + ")")
 .call(xAxis);
 
+// text label for the x axis
+svg.append("text")             
+.attr("transform","translate(" + (width/2) + " ," + (height + margin.top + 7) + ")")
+.style("text-anchor", "middle")
+.attr("class", "xlabel")
+.text("Points");
+        
 //darwing the y-axis
 var yAxis = d3.svg.axis()
 .scale(y)
@@ -81,13 +91,13 @@ var yAxis = d3.svg.axis()
 .ticks(15)
 .innerTickSize(-width+70)
 .outerTickSize(0)
-.tickPadding(10);
+.tickPadding(4);   
 
 svg.append("g")
 .attr("class", "axis") //adding class for style purposes
-.attr("transform", "translate(" + 30 + ",0)")
+.attr("transform", "translate(" + (width - 1090) + ",0)")
 .call(yAxis);
-
+        
 //method that listens to the user's mouse behaviour
 function listen () {
 drawing = true;
@@ -109,11 +119,19 @@ bluepath = svg.append("path") // start a new line for the blue channel
 .attr("class", "bline")
 .attr("d", line);
 
-//when the user clicks trigger mousemove to start drawing    
-if (d3.event.type === 'click') {
+
+//when the user clicks and hold it, triggers mousemove to start drawing    
+if (d3.event.type === 'mousedown') {
 svg.on("mousemove", onmove);
-} else {
-svg.on("touchmove", onmove);
+}
+else if (d3.event.type === 'dblclick'){
+flag = true ;
+firstread = false;
+svg.on("mousemove", onmove);
+         }
+else{
+svg.on("mousemove", onmove);
+
 }
 }
 
@@ -121,6 +139,7 @@ function ignore () {
 var before, after;
 svg.on("mousemove", null);
 svg.on("touchmove", null);
+flag = false    
 
 // skip out if we're not drawing
 if (!drawing) return;
@@ -144,32 +163,62 @@ point = d3.touches(this)[0];
 xmouse = Math.round(x.invert(point[0] ))
 ymouse = y.invert(point[1])
 
+
 //limit the range, so they don't draw outside the canvas
 if( xmouse<256 && ymouse >=0 && x.invert(point[0]) >=0){
 
-position = {x: Math.round( x.invert(point[0])),  y:  y.invert(point[1])}
-
+position = {x: xmouse,  y: ymouse}
+    
+if(!firstread){
+firstpoint = point[1]
+firstread = true
+}
 if(color== 'red'){
-redArray.push(position)
+if(flag){
+reddata.push({ x: point[0], y: firstpoint });
+for (const x of Array(256).keys()) { 
+redArray.push({x:x ,  y:  y.invert(firstpoint)})
+}   
+}
+else{    
 reddata.push({ x: point[0], y: point[1] });
+redArray.push(position)
+console.log("red",redArray)
+
+}
+    
 tick(redpath);
 }
 else
 if(color== 'green'){
-greenArray.push(position)
+if(flag){
+greendata.push({ x: point[0], y: firstpoint });
+for (const x of Array(256).keys()) { 
+greenArray.push({x:x ,  y:  y.invert(firstpoint)})
+}   
+}
+else{    
 greendata.push({ x: point[0], y: point[1] });
+greenArray.push(position)}
 tick(greenpath);
 }
 if(color== 'blue'){
-blueArray.push(position)
+if(flag){
+bluedata.push({ x: point[0], y: firstpoint });
+for (const x of Array(256).keys()) { 
+blueArray.push({x:x ,  y:  y.invert(firstpoint)})
+}   
+}
+else{    
 bluedata.push({ x: point[0], y: point[1] });
+blueArray.push(position)}
 tick(bluepath);
 }
 }//end if
+ 
 }// end onmove method
 
 function tick(path) {
 path.attr("d", function(d) { return line(d); }) // Redraw the path:
 }
-
 
