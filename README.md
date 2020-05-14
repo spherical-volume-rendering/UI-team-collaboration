@@ -1,7 +1,7 @@
 # Yt User Interface
  This project extends the yt open-source data analysis and visualization package, providing an enhanced, integrated user interface for data exploration and enabling the visualization of physical data that comes from non-cartesian grids.
  
-# The Handover Package
+# Handover Package
 This package includes project links, references, and further documentation that details the requirements analysis and specification, system and program design, user interface design and testing, test plan, test examples, and results.
 
    - [Initial Proposal](https://hackmd.io/@matthewturk/SJCHGC6-I)
