@@ -32,3 +32,5 @@ The server is now running on your local machine at port 5000, to view tha platfo
 http://0.0.0.0:5000/
 ```
 
+# Business Considerations
+As Cornell students, the team owns the copyright in the software that we create in this project. The team agrees to transfer the copyright to the client and to provide the client with an unrestricted license to use the system. We understand that the use of open-source solutions is a viable option and that there are not any serious licensing issues to this extent. It is also imperative to acknowledge that yt is under the 3-clause BSD license, non-copyleft.
