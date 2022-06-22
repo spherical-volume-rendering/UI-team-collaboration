@@ -1,4 +1,4 @@
 flask==1.1.1
 matplotlib==2.2.3
 yt==3.5.1
-numpy==1.16.5
+numpy==1.22.0
